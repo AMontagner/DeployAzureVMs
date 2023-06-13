@@ -4,4 +4,4 @@ I will like to add the built in policies to scale the VMs automatically. We can 
 
 We will probably need to create a policy definition and assignment using terraform. Look into this https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subscription_policy_assignment
 
-Maybe also implement remediation so that policiy takes effect at the resource level and not have to redeploy VM? 
+Maybe also implement remediation so that policy takes effect at the resource level and not have to redeploy VM? 
