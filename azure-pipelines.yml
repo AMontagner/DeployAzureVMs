@@ -1,0 +1,51 @@
+trigger:
+- none
+
+pr: none
+
+pool:
+  vmImage: ubuntu-latest
+
+parameters:
+- name: image
+  displayName: VM Image
+  type: string
+  default: windows
+  values:
+  - windows
+  - linux
+
+
+stages:
+
+  - stage:
+    displayName: Deploy terraform resources
+    jobs:
+      - job:
+        displayName: Deploy vm
+        steps:
+
+          - task: TerraformInstaller@0
+            displayName: install terraform tools
+            inputs:
+              terraformVersion: 'latest'
+          
+          - task: TerraformTaskV2@2
+            displayName: terraform init
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              workingDirectory: '$(Build.SourcesDirectory)/${{ parameters.image }}'
+              backendServiceArm: 'AzureMSDN-ADO Intro'
+              backendAzureRmResourceGroupName: 'terraform'
+              backendAzureRmStorageAccountName: 'geralexgrstorageaccount'
+              backendAzureRmContainerName: 'terraform'
+              backendAzureRmKey: 'terraform.tfstate'
+          
+          - task: TerraformTaskV2@2
+            displayName: terraform apply
+            inputs:
+              provider: 'azurerm'
+              command: 'apply'
+              workingDirectory: '$(Build.SourcesDirectory)/${{ parameters.image }}'
+              environmentServiceNameAzureRM: 'AzureMSDN-ADO Intro'
